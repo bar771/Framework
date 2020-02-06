@@ -32,21 +32,21 @@ class Database {
 		return $this->pdo = null;
 	}
 
-	public function prepare($sql) {
-		return $this->pdo->prepare($sql);
+	public function prepare($sql, $val) {
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute($val);
+		return $stmt;
 	}
 
-	public function query($sql) {
-		return $this->pdo->query($sql);
-	}
-
-	public function getRowsCount($table) {
-		$stmt = $this->pdo->prepare('SELECT COUNT(*) AS count FROM '.$table);
-		//$stmt->bindParam(':tablename', $table, PDO::PARAM_STR);
-		$stmt->closeCursor();
-		$stmt->execute();
-		$row = $stmt->fetch();
-		return $row['count'];
+	// Functions as AUTO_INCREMENT. 
+	public function getCount($table) {
+		$stmt = $this->pdo->prepare('SELECT COUNT(*) AS `count` FROM ?');
+		$stmt->execute(array($table));
+		$count = $stmt->fetch()['count'];
+		
+		$stmt = $this->pdo->prepare('SELECT `id` FROM ? WHERE id=?');
+		$stmt->execute(array($table, $count));
+		return ($stmt->numRow() > 0 ? $count++ : $count);
 	}
 }
 

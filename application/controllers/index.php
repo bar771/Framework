@@ -22,13 +22,11 @@ class Index extends BaseObject {
 	function init() {
 		parent::init();
 
-		$returnURL = 'return';
-		$campaign = 'campaign';
-		if ($this->getRequest($returnURL) != null) {
-			// Redirect to other website.
-			header('location: '.urldecode($this->getRequest($returnURL)));
-		}
-		else if ($this->getRequest($campaign) != null) {
+		$redirect = $_GET['redirect'];
+
+		if (!empty($redirect)) {
+			header('location: '.WEBSITE_DOMAIN.urldecode($redirect));
+			die;
 		}
 
 		$this->setTitle('Home page');
