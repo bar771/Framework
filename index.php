@@ -30,6 +30,7 @@ if (!empty($argv[1])) { // php index.php [FILENAME]
 define('USER_AGENT', $_SERVER['HTTP_USER_AGENT']);
 define('USER_IP', (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER['REMOTE_ADDR']));
 define('USER_REFERER', (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/'));
+define('REVERSE_PROXY_DOMAIN', $_SERVER['HTTP_DOMAIN']); // Reverse Proxy
 
 if(!isset($_SESSION)) session_start();
 
