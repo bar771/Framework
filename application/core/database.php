@@ -28,6 +28,7 @@ class Database {
 		}
 	}
 
+	// Close the connection when dont need it. 
 	public function close() {
 		return $this->pdo = null;
 	}
@@ -40,13 +41,11 @@ class Database {
 
 	// Functions as AUTO_INCREMENT. 
 	public function getCount($table) {
-		$stmt = $this->pdo->prepare('SELECT COUNT(*) AS `count` FROM ?');
-		$stmt->execute(array($table));
+		$stmt = $this->prepare('SELECT COUNT(*) AS `count` FROM ?', array($table));
 		$count = $stmt->fetch()['count'];
 		
-		$stmt = $this->pdo->prepare('SELECT `id` FROM ? WHERE id=?');
-		$stmt->execute(array($table, $count));
-		return ($stmt->numRow() > 0 ? $count++ : $count);
+		$stmt = $this->prepare('SELECT `id` FROM ? WHERE id=?', array($table, $count));
+		return ($stmt->rowCount() > 0 ? $count++ : $count);
 	}
 }
 

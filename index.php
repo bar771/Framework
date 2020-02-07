@@ -5,15 +5,17 @@ include Util::getFile('core/database.php');
 
 use Framework\Database;
 
+define('TIMEZONE', 'Asia/Jerusalem');
+define('WEBSITE_DOMAIN', 'http://localhost/');
+define('WEBSITE_NAME', 'ilCapo01 Framework');
+define('WEBSITE_VERSION', 3.0);
+define('WEBSITE_AUTHOR', 'ilCapo01');
+
+// TODO: Save errors to file.
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
 error_reporting(-1);
-date_default_timezone_set('Asia/Jerusalem');
-
-define('WEBSITE_DOMAIN', 'http://localhost/?c=');
-define('WEBSITE_NAME', 'Voicey');
-define('WEBSITE_VERSION', 2.0);
-define('WEBSITE_AUTHOR', 'ilCapo');
+date_default_timezone_set(TIMEZONE);
 
 // Allow to run scripts in cli environment, or as cron job.
 if (!empty($argv[1])) { // php index.php [FILENAME]
@@ -50,6 +52,7 @@ include Util::getFile('core/model.php');
 
 // Probably a primitive bot is trying to access the website.
 if (empty(USER_AGENT)) {
+	header('HTTP/1.0 403 Forbidden');
 	die;
 } else { // A normal visitor trys to access the website.
 	$controller = (isset($_GET['c']) ? $_GET['c'] : '');
