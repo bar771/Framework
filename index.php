@@ -26,7 +26,7 @@ define('WEBSITE_AUTHOR', 'ilCapo01');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', '[YOUR_DB_NAME_COME_HERE]');
+define('DB_NAME', 'YOUR_DB_NAME_COME_HERE');
 
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
@@ -50,7 +50,6 @@ if (!empty($argv[1])) { // php index.php [FILENAME]
 define('USER_AGENT', $_SERVER['HTTP_USER_AGENT']);
 define('USER_IP', (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER['REMOTE_ADDR']));
 define('USER_REFERER', (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/'));
-define('REVERSE_PROXY_DOMAIN', $_SERVER['HTTP_DOMAIN']); // Reverse Proxy
 
 if(!isset($_SESSION)) 
 	session_start();
