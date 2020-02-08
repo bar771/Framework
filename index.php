@@ -10,6 +10,7 @@ define('VIEW_PATH', ABSPATH . 'application/models/views/');
 define('LIBRARY_PATH', ABSPATH . 'application/models/libraries/');
 define('CORE_PATH', ABSPATH . 'application/models/core/');
 define('SCRIPT_PATH', ABSPATH . 'application/CronJobs/');
+define('UPLOAD_PATH', ABSPATH . 'application/uploads/');
 
 include CORE_PATH . 'util.php';
 include CORE_PATH . 'database.php';

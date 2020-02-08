@@ -171,6 +171,22 @@ class Util {
 			return ($diff/60).' month(s) ago';
 		return ($diff/60/60/24/30/12).' year(s) ago';
 	}
+
+	static function uploadFile($file = 'file', $sizeLimit = (1024*1024)*5, $types = array()) {
+		$file = $_FILES[$file];
+
+		if ($file['error'] != UPLOAD_ERR_OK) 
+			return false;
+
+		if ($file['size'] >= $sizeLimit)
+			return false;
+
+		if (in_array($file['type'], $types)) 
+			return false;
+
+		// Give it random name, and save its real name to the db.
+		return move_uploaded_file($file['tmp_name'], $file['name']);
+	}
 }
 
 ?>
