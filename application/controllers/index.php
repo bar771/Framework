@@ -22,57 +22,42 @@ class Index extends BaseObject {
 	function init() {
 		parent::init();
 
-		$redirect = $_GET['redirect'];
-
-		if (!empty($redirect)) {
-			header('location: '.WEBSITE_DOMAIN.urldecode($redirect));
-			die;
-		}
-
 		$this->setTitle('Home page');
 		$this->renderView('index');
 	}
 
-	/*
-	 * @return void
-	**/
 	function login() {
-		if ($this->user->authenticateSession() || $this->user->isOnline())
-			header('Content-Type: /');
-		$this->setTitle('Login');
-		$this->renderView('login');
+		$errors = '';
+		
+		$uname = Security::protect_xss($_POST['username']);
+		$pword = Security::protect_xss($_POST['password']);
+
+		if (empty($errors)) {
+
+			$redirect = $_GET['redirect'];
+			
+			// Log in.
+
+			header('location: '.
+				(isset($_GET['redirect']) ? WEBSITE_DOMAIN.urldecode($_GET['redirect']) : '/'));
+			die;
+		}
+
 	}
 
-	/*
-	 * @return void
-	**/
 	function register() {
-		if ($this->user->authenticateSession() || $this->user->isOnline())
-			header('Content-Type: /');
-		$this->setTitle('Register');
-		$this->renderView('register');
+		$uname = Security::protect_xss($_POST['username']);
+		$pword = Security::protect_xss($_POST['password']);
+		$mail = Security::protect_xss($_POST['email']);
+
+		$salt = '';
+
+		$this->database->prepare('INSERT INTO `users` (username,password,email,salt,time,lastlogin) VALUES ()', 
+			array());
+
+
 	}
 
-	/*
-	 * @return void
-	**/
-	function logout() {
-		if (!$this->user->authenticateSession() || !$this->user->isOnline())
-			header('Content-Type: /');
-
-		if (USER_REFERER == '/process/logout')
-			header('location: /');
-		header('location: '.USER_REFERER);
-	}
-
-	/*
-	 * @param integer $userID
-	 * @return void
-	**/
-	function profile($userID = 0) {
-		$this->setTitle('Profile');
-		$this->renderView('profile');
-	}
 }
 
 ?>
