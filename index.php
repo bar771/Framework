@@ -8,6 +8,13 @@ use Framework\Database;
 if ( !defined('ABSPATH')) 
 	define('ABSPATH', dirname(__FILE__).'/');
 
+define('MODEL_PATH', ABSPATH . 'application/models/');
+define('CONTROLLER_PATH', ABSPATH . 'application/controllers/');
+define('VIEW_PATH', ABSPATH . 'application/models/views/');
+define('LIBRARY_PATH', ABSPATH . 'application/models/libraries/');
+define('CORE_PATH', ABSPATH . 'application/models/core/');
+define('SCRIPT_PATH', ABSPATH . 'application/CronJobs/');
+
 define('TIMEZONE', 'Asia/Jerusalem');
 define('WEBSITE_DOMAIN', 'http://localhost/');
 define('WEBSITE_NAME', 'ilCapo01 Framework');
@@ -19,15 +26,16 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_NAME', '[YOUR_DB_NAME_COME_HERE]');
 
-// TODO: Save errors to file.
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
+ini_set("log_errors", 1);
+ini_set("error_log", '/php-error.log');
 error_reporting(-1);
 date_default_timezone_set(TIMEZONE);
 
 // Allow to run scripts in cli environment, or as cron job.
 if (!empty($argv[1])) { // php index.php [FILENAME]
-	include Util::getFile('core/cronjob.php');
+	include CORE_PATH . 'cronjob.php';
 
 	$opt = array('db' => Database::$dbname, 'host' => Database::$host, 'user' => Database::$user, 'password' => Database::$pword);
 	$db = new Database($opt);
@@ -42,7 +50,8 @@ define('USER_IP', (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FO
 define('USER_REFERER', (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/'));
 define('REVERSE_PROXY_DOMAIN', $_SERVER['HTTP_DOMAIN']); // Reverse Proxy
 
-if(!isset($_SESSION)) session_start();
+if(!isset($_SESSION)) 
+	session_start();
 
 Util::detectMobile(USER_AGENT);
 
@@ -54,9 +63,9 @@ Util::force_www(false);
 //Util::force_ssl();
 
 // Load framework's environment.
-include Util::getFile('core/controller.php');
-include Util::getFile('core/bootstrap.php');
-include Util::getFile('core/model.php');
+include CORE_PATH.'controller.php';
+include CORE_PATH.'bootstrap.php';
+include CORE_PATH .'model.php';
 
 // Probably a primitive bot is trying to access the website.
 if (empty(USER_AGENT)) {
@@ -76,37 +85,13 @@ class Util {
 // https://www.winginx.com/en/htaccess
 
 	/*
-	 * @param string $path
-	 * @return string
-	 * Returns file's path.
-	**/
-	static function getFile($path = '') {
-		$appPath = dirname(__FILE__).'/application/'.$path;
-		if (self::isFileExists($appPath))
-			return $appPath;
-		return '';
-	}
-
-	/*
-	 * @param string $path
-	 * @return string
-	 * Returns directory's path.
-	**/
-	static function getDirectory($path = '') {
-		$dirPath = dirname(__FILE__).'/application/'.$path;
-		if (self::isDirectoryExists($dirPath))
-			return $dirPath;
-		return '';
-	}
-
-	/*
 	 * @param string $filename
 	 * @param object $db
 	 * @return object
 	 * Execute php script in cli environment.
 	**/
 	static function ExecuteCronJob($filename = '', $db) {
-		if (!empty($path = self::getFile('CronJobs/'.$filename.'.php'))) {
+		if (!empty($path = SCRIPT_PATH . $filename . '.php' )) {
 			include $path;
 			$class = 'Framework\\CronJobs\\'.$filename;
 			return new $class($db);
@@ -119,7 +104,7 @@ class Util {
 	 * Load models.
 	**/
 	static function loadModel($model = '') {
-		$model = (!empty($model) ? self::getFile('models/'.$model.'.php') : '');
+		$model = (!empty($model) ? MODEL_PATH . $model . '.php' : '');
 		include $model;
 	}
 
@@ -129,30 +114,8 @@ class Util {
 	 * Load libraries.
 	**/
 	static function loadLibrary($library = '') {
-		$library = (!empty($library) ? self::getFile('libraries/'.$library.'.php') : '');
+		$library = (!empty($library) ? LIBRARY_PATH . $library . '.php' : '');
 		include $library;
-	}
-
-	/*
-	 * @param string $path
-	 * @return boolean
-	 * Checks if the file is exist.
-	**/
-	private static function isFileExists($path = '') {
-		if (file_exists($path) && !is_dir($path))
-			return true;
-		return false;
-	}
-
-	/*
-	 * @param string $path
-	 * @return boolean
-	 * Checks if the directory is exist.
-	**/
-	private static function isDirectoryExists($path = '') {
-		if (is_dir($path))
-			return true;
-		return false;
 	}
 
 	/*
@@ -179,20 +142,6 @@ class Util {
 	}
 
 	/*
-	 * @return void
-	 * Process _GET, _POST and _REQUEST for XSS and SQLI attacks.
-	 * TODO: Not working for some reason :\
-	**/
-	static function processRequests() {
-		foreach ($_GET as $req => $val)
-			$val = htmlspecialchars(htmlentities(rtrim($val)),ENT_QUOTES);
-		foreach ($_POST as $req => $val)
-			$val = htmlspecialchars(htmlentities(rtrim($val)),ENT_QUOTES);
-		foreach ($_REQUEST as $req => $val)
-			$val = htmlspecialchars(htmlentities(rtrim($val)),ENT_QUOTES);
-	}
-
-	/*
 	 * @param boolean $on
 	**/
 	static function force_www($on = true) {
@@ -209,7 +158,7 @@ class Util {
 		if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off") {
 			header('HTTP/1.1 301 Moved Permanently');
 			header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-			exit();
+			exit;
 		}
 	}
 
@@ -231,7 +180,7 @@ class Util {
 		$json_response = curl_exec($curl);
 		$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		if ( $status != 201 )
-		    die("Error: call to URL $url failed with status $status, response $json_response, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
+		    die("Error: call to URL ".$url." failed with status ".$status.", response ".$json_response.", curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
 		curl_close($curl);
 		return json_decode($json_response, true);
 	}
@@ -251,7 +200,8 @@ class Util {
 	 * @return binary (image/png)
 	**/
 	static function textToQR($c) {
-		return self::sendJSON('https://tippin.me/qrcode.php?c='.$c);
+		//return self::sendJSON('https://tippin.me/qrcode.php?c='.$c);
+		return self::sendJSON('https://chart.googleapis.com/chart?chs=50x50&cht=qr&chl='.urlencode($c).'&chld=L|1&choe=UTF-8');
 	}
 
 
