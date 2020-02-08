@@ -5,6 +5,9 @@ include Util::getFile('core/database.php');
 
 use Framework\Database;
 
+if ( !defined('ABSPATH')) 
+	define('ABSPATH', dirname(__FILE__).'/');
+
 define('TIMEZONE', 'Asia/Jerusalem');
 define('WEBSITE_DOMAIN', 'http://localhost/');
 define('WEBSITE_NAME', 'ilCapo01 Framework');
