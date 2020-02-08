@@ -85,6 +85,11 @@ class Controller {
 	public function setVars($vars) {
 		$this->vars = $vars;
 	}
+
+	// Park wildcard.domain or domain to the folder of the framework.
+	public function getHTTPHost() {
+		return $_SERVER['HTTP_HOST'];
+	}
 }
 
 ?>
