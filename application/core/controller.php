@@ -90,6 +90,18 @@ class Controller {
 	public function getHTTPHost() {
 		return $_SERVER['HTTP_HOST'];
 	}
+
+	function getSubDomain($domain = 'example.com'){
+		$sub = $this->getHTTPHost();
+		if (preg_match('/((.*).'.$domain.')/', $sub)) 
+			return explode('.', $sub)[0]; // siteurl
+	}
+
+	function getDomain() {
+		$domain = $this->getHTTPHost();
+		if (preg_match('/((.*).(com|net|co.il))|(www.(.*).(com|net|co.il))/', $domain)) 
+			return $domain;
+	}
 }
 
 ?>
