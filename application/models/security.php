@@ -9,8 +9,17 @@ class Security extends baseObject {
 		parent::__construct($database);
 	}
 
+	public function start_form($method = 'POST', $action = '/', $type = '', $form = '')
+	{ 
+		return 
+		'<form action="'.$method.'" action="'.$action.'" type="'.$type.'">
+			<input type="hidden" name="securityToken" value="'.echo $this->securityToken();.'">
+			'.$form.
+		'</form>';
+	}
+
 	/*
-	 * <input type="hidden" name="securityToken" value="<?php echo $thiis->securityToken(); ?\>">
+	 * <input type="hidden" name="securityToken" value="<?php echo $this->securityToken(); ?\>">
 	**/
 	public function securityToken() {
 		if (!isset($_SESSION['token']) || count($_POST) === 0 && count($_GET) === 0) $_SESSION['token'] = bin2hex(random_bytes(32));
@@ -27,10 +36,8 @@ class Security extends baseObject {
     /*
      * https://developers.google.com/recaptcha/docs/verify
     **/
-	public function reCaptcha() {
-		$secret = '';
-		$res = $_POST['g-recaptcha-response'];
-		$url = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$res;
+	public function reCaptcha($secret) {
+		$url = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response'];
 		$json = json_decode(file_get_contents($url));
 		return $json->{'success'};
 	}
