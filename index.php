@@ -11,6 +11,11 @@ define('WEBSITE_NAME', 'ilCapo01 Framework');
 define('WEBSITE_VERSION', 3.0);
 define('WEBSITE_AUTHOR', 'ilCapo01');
 
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_NAME', '[YOUR_DB_NAME_COME_HERE]');
+
 // TODO: Save errors to file.
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);

@@ -16,7 +16,7 @@ class Controller {
 	 * Constructor method
 	**/
 	function __construct($param = '') {
-		$opt = array('db' => 'voicey', 'host' => 'localhost', 'user' => 'root', 'password' => '');
+		$opt = array('db' => DB_NAME, 'host' => DB_HOST, 'user' => DB_USER, 'password' => DB_PASS);
 		$this->database = new Database($opt);
 	}
 
