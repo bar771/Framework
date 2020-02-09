@@ -68,6 +68,13 @@ include CORE_PATH.'controller.php';
 include CORE_PATH.'bootstrap.php';
 include CORE_PATH .'model.php';
 
+//https://support.google.com/webmasters/answer/93710
+//https://developers.google.com/search/reference/robots_meta_tag
+if (preg_match('/^(AOL)|(Baiduspider)|(bingbot)|(DuckDuckBot)|(Googlebot)|(Yahoo)|(YandexBot)$/', USER_AGENT)) {
+	header('HTTP/1.1 200 OK');
+	header('X-Robots-Tag: index, follow'); // noindex, nofollow, noarchive
+}
+
 // Probably a primitive bot is trying to access the website.
 if (empty(USER_AGENT)) {
 	header('HTTP/1.0 403 Forbidden');
