@@ -75,7 +75,7 @@ if (preg_match('/^(AOL)|(Baiduspider)|(bingbot)|(DuckDuckBot)|(Googlebot)|(Yahoo
 	header('X-Robots-Tag: index, follow'); // noindex, nofollow, noarchive
 }
 
-// Probably a primitive bot is trying to access the website.
+// TODO: BROWSER CHECKING.
 if (empty(USER_AGENT)) {
 	header('HTTP/1.0 403 Forbidden');
 	die;
