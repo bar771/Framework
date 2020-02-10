@@ -6,9 +6,9 @@ if ( !defined('ABSPATH'))
 
 define('MODEL_PATH', ABSPATH . 'application/models/');
 define('CONTROLLER_PATH', ABSPATH . 'application/controllers/');
-define('VIEW_PATH', ABSPATH . 'application/models/views/');
-define('LIBRARY_PATH', ABSPATH . 'application/models/libraries/');
-define('CORE_PATH', ABSPATH . 'application/models/core/');
+define('VIEW_PATH', ABSPATH . 'application/views/');
+define('LIBRARY_PATH', ABSPATH . 'application/libraries/');
+define('CORE_PATH', ABSPATH . 'application/core/');
 define('SCRIPT_PATH', ABSPATH . 'application/CronJobs/');
 define('UPLOAD_PATH', ABSPATH . 'application/uploads/');
 
