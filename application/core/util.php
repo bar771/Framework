@@ -8,6 +8,12 @@ class Util {
 // Convert htaccess to nginx
 // https://www.winginx.com/en/htaccess
 
+	static function movedPermanently($url) {
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: ".$url);
+		die;
+	}
+
 	/*
 	 * @param string $filename
 	 * @param object $db
@@ -175,13 +181,13 @@ class Util {
 	static function uploadFile($file = 'file', $sizeLimit = (1024*1024)*5, $types = array()) {
 		$file = $_FILES[$file];
 
-		if ($file['error'] != UPLOAD_ERR_OK) 
+		if ($file['error'] != UPLOAD_ERR_OK)
 			return false;
 
 		if ($file['size'] >= $sizeLimit)
 			return false;
 
-		if (in_array($file['type'], $types)) 
+		if (in_array($file['type'], $types))
 			return false;
 
 		// Give it random name, and save its real name to the db.
