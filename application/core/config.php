@@ -1,5 +1,4 @@
 <?php
-namespace Framework;
 
 define('TIMEZONE', 'Asia/Jerusalem');
 define('WEBSITE_DOMAIN', 'http://localhost/');
