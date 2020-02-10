@@ -26,12 +26,15 @@ ini_set("error_log", '/php-error.log');
 error_reporting(-1);
 date_default_timezone_set(TIMEZONE);
 
+//$opt = array('db' => Database::$dbname, 'host' => Database::$host, 'user' => Database::$user, 'password' => Database::$pword);
+$opt = array('db' => DB_NAME, 'host' => DB_HOST, 'user' => DB_USER, 'password' => DB_PASS);
+$db = new Database($opt);
+
 // Allow to run scripts in cli environment, or as cron job.
 if (!empty($argv[1])) { // php index.php [FILENAME]
 	include CORE_PATH . 'cronjob.php';
 
-	$opt = array('db' => Database::$dbname, 'host' => Database::$host, 'user' => Database::$user, 'password' => Database::$pword);
-	$db = new Database($opt);
+
 	$class = Util::ExecuteCronJob($argv[1], $db); // $_SERVER['argv']
 	$class->init();
 	$db = null;
@@ -71,8 +74,9 @@ if (empty(USER_AGENT)) {
 	die;
 } else {
 	$controller = (isset($_GET['c']) ? $_GET['c'] : '');
-	$boot = new Bootstrap($controller);
+	$boot = new Bootstrap($controller, $db);
 	$boot->init();
 }
+$db = null;
 
 ?>

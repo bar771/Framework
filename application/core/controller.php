@@ -15,9 +15,10 @@ class Controller {
 	 * @param string $param
 	 * Constructor method
 	**/
-	function __construct($param = '') {
-		$opt = array('db' => DB_NAME, 'host' => DB_HOST, 'user' => DB_USER, 'password' => DB_PASS);
-		$this->database = new Database($opt);
+	function __construct($param = '', $db = null) {
+		//$opt = array('db' => DB_NAME, 'host' => DB_HOST, 'user' => DB_USER, 'password' => DB_PASS);
+		//$this->database = new Database($opt);
+		$this->database = $db;
 	}
 
 	public function init() {
@@ -93,13 +94,13 @@ class Controller {
 
 	function getSubDomain($domain = 'example.com'){
 		$sub = $this->getHTTPHost();
-		if (preg_match('/((.*).'.$domain.')/', $sub)) 
+		if (preg_match('/((.*).'.$domain.')/', $sub))
 			return explode('.', $sub)[0]; // siteurl
 	}
 
 	function getDomain() {
 		$domain = $this->getHTTPHost();
-		if (preg_match('/((.*).(com|net|co.il))|(www.(.*).(com|net|co.il))/', $domain)) 
+		if (preg_match('/((.*).(com|net|co.il))|(www.(.*).(com|net|co.il))/', $domain))
 			return $domain;
 	}
 }
