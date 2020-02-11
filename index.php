@@ -60,10 +60,7 @@ if (preg_match('/^(AOL)|(Baiduspider)|(bingbot)|(DuckDuckBot)|(Googlebot)|(Yahoo
 
 Util::detectMobile(USER_AGENT);
 
-// Disable browser from cache files.
-Util::disableCache();
-// Anti-XSS\-SQLI
-Util::processRequests();
+//Util::disableCache();
 Util::force_www(false);
 //Util::force_ssl();
 
