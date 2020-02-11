@@ -12,6 +12,7 @@ define('LIBRARY_PATH', ABSPATH . 'application/libraries/');
 define('CORE_PATH', ABSPATH . 'application/core/');
 define('SCRIPT_PATH', ABSPATH . 'application/CronJobs/');
 define('UPLOAD_PATH', ABSPATH . 'application/uploads/');
+define('MEDIA_PATH', ABSPATH . 'application/uploads/media/');
 
 include CORE_PATH . 'config.php';
 include CORE_PATH . 'util.php';

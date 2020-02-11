@@ -103,6 +103,21 @@ class Controller {
 		if (preg_match('/((.*).(com|net|co.il))|(www.(.*).(com|net|co.il))/', $domain))
 			return $domain;
 	}
+
+	function getMedia($userID = -1) {
+		$stmt = $database->prepare('SELECT * FROM `media` WHERE userID=?', array($userID));
+		$files = $stmt->fetchAll();
+
+		$arr = array();
+		foreach($files as $file) {
+			array_push($arr, array(
+				'name' => $file['filename'],
+				'path' => MEDIA_PATH . $file['filename'],
+				'size' => filesize(MEDIA_PATH . $file['filename'])
+			));
+		}
+		return $arr;
+	}
 }
 
 ?>
