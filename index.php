@@ -14,17 +14,19 @@ define('SCRIPT_PATH', ABSPATH . 'application/CronJobs/');
 define('UPLOAD_PATH', ABSPATH . 'application/uploads/');
 define('MEDIA_PATH', ABSPATH . 'application/uploads/media/');
 
+define('DEVELOPMENT_MODE', 1);
+
 include CORE_PATH . 'config.php';
 include CORE_PATH . 'util.php';
 include CORE_PATH . 'database.php';
 
 use Framework\Database;
 
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
+ini_set('error_reporting', -1);
+ini_set('display_startup_errors', DEVELOPMENT_MODE);
+ini_set('display_errors', DEVELOPMENT_MODE);
 ini_set("log_errors", 1);
-ini_set("error_log", '/php-error.log');
-error_reporting(-1);
+ini_set("error_log", ABSPATH . 'application/php-error.log');
 date_default_timezone_set(TIMEZONE);
 
 //$opt = array('db' => Database::$dbname, 'host' => Database::$host, 'user' => Database::$user, 'password' => Database::$pword);
