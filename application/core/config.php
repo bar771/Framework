@@ -2,7 +2,7 @@
 
 define('TIMEZONE', 'Asia/Jerusalem');
 define('WEBSITE_PROTOCOL', 'http'); 
-define('WEBSITE_DOMAIN', WEBSITE_PROTOCOL.'://'.$_SERVER['HTTP_HOST'].'/');
+define('WEBSITE_DOMAIN', $_SERVER['HTTP_HOST'].'/');
 define('WEBSITE_NAME', 'ilCapo01 Framework');
 define('WEBSITE_VERSION', 3.0);
 define('WEBSITE_AUTHOR', 'ilCapo01'); 
