@@ -77,6 +77,6 @@ if (empty(USER_AGENT)) {
 	$boot = new Bootstrap($controller, $db);
 	$boot->init();
 }
-$db = null;
+$db-close();
 
 ?>
