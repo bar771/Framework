@@ -92,9 +92,9 @@ class Controller {
 		return $_SERVER['HTTP_HOST'];
 	}
 
-	function getSubDomain($domain = 'example.com'){
+	function getSubDomain(){
 		$sub = $this->getHTTPHost();
-		if (preg_match('/((.*).'.$domain.')/', $sub))
+		if (preg_match('/((.*).'.WEBSITE_DOMAIN.')/', $sub))
 			return explode('.', $sub)[0]; // siteurl
 	}
 
@@ -117,6 +117,24 @@ class Controller {
 			));
 		}
 		return $arr;
+	}
+
+	function sendHTTPRequest($url, $method = 'POST', $data = array(), $doUpload = false) {
+		if (!$doUpload) $data = http_build_query($data);
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		    'Content-type: '.($doUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded'),
+		    'Content-length: '.sizeof($data)
+		));
+
+		curl_setopt($ch, CURLOPT_POST, ($method == 'POST' ? 1 : 0));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		curl_close ($ch);
+		return $server_output;
 	}
 }
 
