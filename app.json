@@ -3,8 +3,6 @@
   "description": "",
   "repository": "https://github.com/ilCapo01/framework.git",
   "addons": [
-    "PHPMailer": {
-      "plan": "phpmailer"
-    }
+    "PHPMailer"
   ]
 }
