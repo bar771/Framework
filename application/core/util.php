@@ -192,8 +192,12 @@ class Util {
 		if (in_array($file['type'], $types))
 			return false;
 
-		// Give it random name, and save its real name to the db.
-		return move_uploaded_file($file['tmp_name'], $file['name']);
+		srand(time());
+		$realFilename = $file['name'];
+		$randFilename = rand(1000, 9999);
+
+		// TODO: Give it random name, save its real name and timestamp to the db.
+		return move_uploaded_file($file['tmp_name'], MEDIA_PATH . $randFilename);
 	}
 }
 
