@@ -15,6 +15,7 @@ define('MEDIA_PATH', ABSPATH . 'application/uploads/media/');
 
 define('DEVELOPMENT_MODE', 1);
 define('PARAM_CLI', $_SERVER['argv']); // $argv
+define('RAW_DATA', file_get_contents("php://input"));
 
 ob_start();
 include CORE_PATH . 'config.php';

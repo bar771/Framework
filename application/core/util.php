@@ -119,8 +119,11 @@ class Util {
 	 * Receives data from the user in json format and converts it to an array.
 	**/
 	static function receiveJSON() {
-		$v = json_decode(stripslashes(file_get_contents("php://input")));
-		if(empty($v))  die('Not found');
+		$v = json_decode(stripslashes(RAW_DATA));
+
+		if(empty($v))
+			die('Not found');
+
 		return $v;
 	}
 
