@@ -14,7 +14,7 @@ define('UPLOAD_PATH', ABSPATH . 'application/uploads/');
 define('MEDIA_PATH', ABSPATH . 'application/uploads/media/');
 
 define('DEVELOPMENT_MODE', 1);
-define('PARAM_CLI', $argv);
+define('PARAM_CLI', $_SERVER['argv']); // $argv
 
 ob_start();
 include CORE_PATH . 'config.php';
