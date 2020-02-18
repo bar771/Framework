@@ -46,7 +46,7 @@ try {
 if (!empty($argv[1])) { // php index.php [FILENAME]
 	$class = Util::ExecuteCronJob($argv[1], $db); // $_SERVER['argv']
 	$class->init();
-	$db = null;
+	$db->close();
 	die;
 }
 
@@ -54,7 +54,8 @@ define('USER_AGENT', $_SERVER['HTTP_USER_AGENT']);
 define('USER_IP', (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER['REMOTE_ADDR']));
 define('USER_REFERER', (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/'));
 
-if(!isset($_SESSION))	session_start();
+if(!isset($_SESSION))
+	session_start();
 
 //https://support.google.com/webmasters/answer/93710
 //https://developers.google.com/search/reference/robots_meta_tag

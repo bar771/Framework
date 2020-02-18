@@ -26,6 +26,7 @@ class Index extends BaseObject {
 		$this->renderView('index');
 	}
 
+	// https://github.com/ilCapo01/websmaking/blob/master/public_html/includes/user.php
 	function mysites($siteID = -1) {
 		$this->setTitle('');
 		if ($siteID == -1) {

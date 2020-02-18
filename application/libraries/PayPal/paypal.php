@@ -1,11 +1,5 @@
 <?php
 
-// https://developer.paypal.com/docs/ipn/
-// https://developer.paypal.com/docs/ipn/integration-guide/IPNImplementation/
-// https://developer.paypal.com/docs/ipn/integration-guide/ht-ipn/
-// https://developer.paypal.com/docs/ipn/integration-guide/IPNSetup/
-
-
 class PayPal {
   /*
    * Functions:
@@ -15,6 +9,22 @@ class PayPal {
   function __construct()
   {
     // Constructor
+  }
+
+  function buildPayment() {
+
+  }
+
+  // https://developer.paypal.com/docs/ipn/
+  // https://developer.paypal.com/docs/ipn/integration-guide/IPNImplementation/
+  // https://developer.paypal.com/docs/ipn/integration-guide/ht-ipn/
+  // https://developer.paypal.com/docs/ipn/integration-guide/IPNSetup/
+  function receiveIPN() {
+    $rawData = stripslashes(RAW_DATA);
+
+    
+
+    header('HTTP/1.1 200 OK');
   }
 }
 
