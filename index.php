@@ -1,6 +1,5 @@
 <?php
 namespace Framework;
-ob_start();
 
 if ( !defined('ABSPATH'))
 	define('ABSPATH', dirname(__FILE__).'/');
@@ -15,10 +14,14 @@ define('UPLOAD_PATH', ABSPATH . 'application/uploads/');
 define('MEDIA_PATH', ABSPATH . 'application/uploads/media/');
 
 define('DEVELOPMENT_MODE', 1);
+define('PARAM_CLI', $argv);
 
+ob_start();
 include CORE_PATH . 'config.php';
 include CORE_PATH . 'util.php';
 include CORE_PATH . 'database.php';
+if (count(PARAM_CLI) > 0) include CORE_PATH . 'cronjob.php';
+ob_end_flush();
 
 use Framework\Database;
 use Exception;
@@ -40,7 +43,6 @@ try {
 
 // Allow to run scripts in cli environment, or as cron job.
 if (!empty($argv[1])) { // php index.php [FILENAME]
-	include CORE_PATH . 'cronjob.php';
 	$class = Util::ExecuteCronJob($argv[1], $db); // $_SERVER['argv']
 	$class->init();
 	$db = null;
@@ -55,6 +57,7 @@ if(!isset($_SESSION))	session_start();
 
 //https://support.google.com/webmasters/answer/93710
 //https://developers.google.com/search/reference/robots_meta_tag
+$bot_headers = array('index, follow' , 'noindex, nofollow, noarchive');
 if (preg_match('/^(AOL)|(Baiduspider)|(bingbot)|(DuckDuckBot)|(Googlebot)|(Yahoo)|(YandexBot)$/', USER_AGENT)) {
 	header('HTTP/1.1 200 OK');
 	header('X-Robots-Tag: index, follow'); // noindex, nofollow, noarchive
