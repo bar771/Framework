@@ -78,8 +78,14 @@ if (empty(USER_AGENT)) {
 	die;
 } else {
 	try {
-		$controller = (isset($_GET['c']) ? $_GET['c'] : '');
-		$boot = new Bootstrap($controller, $db);
+		$server = $_SERVER;
+
+		$host = $server['HOST_NAME'];
+		$path = $server['QUERY_STRING'];
+
+		//$controller = (isset($_GET['c']) ? $_GET['c'] : '');
+		
+		$boot = new Bootstrap($path, $db);
 		$boot->init();
 	} catch (Exception $e) {
 		error_log($e); throw new Exception($e);

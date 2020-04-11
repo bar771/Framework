@@ -15,7 +15,7 @@ class Bootstrap {
 		$this->controller = $controller;
 	}
 
-	public function init() {
+/*	public function init() {
 		if (!empty($this->controller)) {
 			$controller = explode('/', $this->controller);
 			$file = Util::getFile('controllers/'.$controller[0].'.php');
@@ -97,6 +97,50 @@ class Bootstrap {
 			$page = new Controllers\Index();
 			$page->init();
 		}
+	}*/
+
+
+	function init() {
+		$boot = $this->route($this->controller);
+
+		$class = 'Framework\\Controllers\\'.$boot[1][0];
+		$page = new $class;
+		$page->init();
+
+	}
+
+
+	private function route($path) {
+	  $entrypoints = array();
+
+	  $entrypoints['/%c/'] = 'load_controller';
+	  $entrypoints['/%c/%m'] = 'load_controller';
+	  $entrypoints['/%c/%m/%p'] = 'load_controller';
+
+	  $reached = false;
+
+	  list($request) = explode('?', $path);
+
+	  foreach ($entrypoints as $id => $fun) {
+	    $id = '@^' . preg_quote($id, '@') . '$@u';
+
+	    $id = str_replace('%c', '([a-zA-Z]{1,58})', $id);
+	    $id = str_replace('%m', '([a-zA-Z]+)', $id);
+	    $id = str_replace('%p', '([a-zA-Z0-9]+)', $id);
+
+	    $matches = null;
+
+	    if (preg_match($id, $request, $matches)) {
+
+	      array_shift($matches);
+
+	      $reached = array($fun, $matches);
+
+	      break;
+	    }
+	  }
+
+	  return $reached;
 	}
 
 	private function getResources($path, $downloadPopup = false, $cache = true) {
