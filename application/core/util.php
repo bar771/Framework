@@ -34,8 +34,7 @@ class Util {
 	 * Load models.
 	**/
 	static function loadModel($model = '') {
-		$model = (!empty($model) ? MODEL_PATH . $model . '.php' : '');
-		include $model;
+		include (!empty($model) ? MODEL_PATH . $model . '.php' : '');
 	}
 
 	/*
@@ -44,8 +43,7 @@ class Util {
 	 * Load libraries.
 	**/
 	static function loadLibrary($library = '') {
-		$library = (!empty($library) ? LIBRARY_PATH . $library . '.php' : '');
-		include $library;
+		include (!empty($library) ? LIBRARY_PATH . $library . '.php' : '');
 	}
 
 	/*
@@ -54,10 +52,10 @@ class Util {
 	 * @return void
 	 * Allow you to block access to certain php in the root directory.
 	**/
-	static function blockAccess($file, $redirectURL = '/') {
+	static function blockAccess($file) {
 		if ($_SERVER['REQUEST_URI'] == $file) {
 			header('HTTP/1.1 403 Forbidden');
-			header('location: '.$redirectURL);
+			header('location: '.WEBSITE_DOMAIN);
 		}
 	}
 
@@ -98,20 +96,21 @@ class Util {
 	 * @return object / array
 	**/
 	static function sendJSON($url = '', $json = array()) {
-		$content = json_encode($json);
-
 		$curl = curl_init($url);
+
 		curl_setopt($curl, CURLOPT_HEADER, false);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_HTTPHEADER,
 		        array("Content-type: application/json"));
 		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json));
 		$json_response = curl_exec($curl);
+
 		$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		if ( $status != 201 )
 		    die("Error: call to URL ".$url." failed with status ".$status.", response ".$json_response.", curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
 		curl_close($curl);
+
 		return json_decode($json_response, true);
 	}
 
@@ -120,8 +119,11 @@ class Util {
 	 * Receives data from the user in json format and converts it to an array.
 	**/
 	static function receiveJSON() {
-		$v = json_decode(stripslashes(file_get_contents("php://input")));
-		if(empty($v))  die('Not found');
+		$v = json_decode(stripslashes(RAW_DATA));
+
+		if(empty($v))
+			die('Not found');
+
 		return $v;
 	}
 
@@ -152,8 +154,8 @@ class Util {
 					</head>
 					<body>
 						<!-- Display AppStore \ Google Play redirect. -->
-						<img src="'.WEBSITE_DOMAIN.'assets/images/playstore.png">
-						<img src="'.WEBSITE_DOMAIN.'assets/images/appstore.png">
+						<a href="#"><img src="'.WEBSITE_DOMAIN.'assets/images/playstore.png"></a>
+						<a href="#"><img src="'.WEBSITE_DOMAIN.'assets/images/appstore.png"></a>
 					</body>
 				</html>
 				';
@@ -190,8 +192,12 @@ class Util {
 		if (in_array($file['type'], $types))
 			return false;
 
-		// Give it random name, and save its real name to the db.
-		return move_uploaded_file($file['tmp_name'], $file['name']);
+		srand(time());
+		$realFilename = $file['name'];
+		$randFilename = rand(1000, 9999);
+
+		// TODO: Give it random name, save its real name and timestamp to the db.
+		return move_uploaded_file($file['tmp_name'], MEDIA_PATH . $randFilename);
 	}
 }
 

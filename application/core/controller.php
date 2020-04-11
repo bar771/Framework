@@ -66,6 +66,14 @@ class Controller {
 		return WEBSITE_NAME.'&nbsp;-&nbsp;'.$this->title;
 	}
 
+	public function getHead() {
+		return '
+		<meta property="og:locale" content="he_IL">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="">';
+	}
+
 	/*
 	 * @param string $title
 	**/

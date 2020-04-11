@@ -1,0 +1,8 @@
+{
+  "name": "PHP 7 Framework",
+  "description": "",
+  "repository": "https://github.com/ilCapo01/framework.git",
+  "addons": [
+    "PHPMailer"
+  ]
+}
