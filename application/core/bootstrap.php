@@ -103,6 +103,7 @@ class Bootstrap {
 	function init() {
 		$boot = $this->route($this->controller);
 
+		// Just load the controller, for now.
 		$class = 'Framework\\Controllers\\'.$boot[1][0];
 		$page = new $class;
 		$page->init();

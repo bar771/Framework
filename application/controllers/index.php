@@ -26,21 +26,6 @@ class Index extends BaseObject {
 		$this->renderView('index');
 	}
 
-	// https://github.com/ilCapo01/websmaking/blob/master/public_html/includes/user.php
-	function mysites($siteID = -1) {
-		$this->setTitle('');
-		if ($siteID == -1) {
-			// Show all sites.
-
-			$this->renderView('allSites');
-		}
-
-		// Manage specific site.
-
-		$this->setVars(['siteID' => $siteID]);
-		$this->renderView('siteManagement');
-	}
-
 	function login() {
 		$uname = Security::protect_xss($_POST['username']);
 		$pword = Security::protect_xss($_POST['password']);

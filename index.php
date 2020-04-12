@@ -89,7 +89,18 @@ if (empty(USER_AGENT)) {
 		$path = $server['QUERY_STRING'];
 
 		//$controller = (isset($_GET['c']) ? $_GET['c'] : '');
-		
+
+		// Filter input from user.
+		foreach ($_POST as $var => $val) {
+			htmlspecialchars(rtrim($val), ENT_QUOTES);
+			$_POST[$var] = $val;
+		}
+
+		foreach ($_GET as $var => $val) {
+			htmlspecialchars(rtrim($val), ENT_QUOTES);
+			$_GET[$var] = $val;
+		}
+
 		$boot = new Bootstrap($path, $db);
 		$boot->init();
 	} catch (Exception $e) {
