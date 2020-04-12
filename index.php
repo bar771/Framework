@@ -57,6 +57,8 @@ define('USER_REFERER', (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER
 if(!isset($_SESSION))
 	session_start();
 
+setcookie(session_name(), session_id(), time()+86400);
+
 //https://support.google.com/webmasters/answer/93710
 //https://developers.google.com/search/reference/robots_meta_tag
 $bot_headers = array('index, follow' , 'noindex, nofollow, noarchive');
