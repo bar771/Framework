@@ -86,7 +86,7 @@ if (empty(USER_AGENT)) {
 		$server = $_SERVER;
 
 		$host = $server['HOST_NAME'];
-		$path = $server['QUERY_STRING'];
+		$path = $server['REQUEST_URI']; // QUERY_STRING
 
 		//$controller = (isset($_GET['c']) ? $_GET['c'] : '');
 
