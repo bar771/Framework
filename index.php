@@ -1,6 +1,4 @@
 <?php
-namespace Framework;
-
 if ( !defined('ABSPATH'))
 	define('ABSPATH', dirname(__FILE__).'/');
 
@@ -24,9 +22,6 @@ include CORE_PATH . 'database.php';
 if (count(PARAM_CLI) > 0) include CORE_PATH . 'cronjob.php';
 ob_end_flush();
 
-use Framework\Database;
-use Exception;
-
 ini_set('error_reporting', -1);
 ini_set('display_startup_errors', DEVELOPMENT_MODE);
 ini_set('display_errors', DEVELOPMENT_MODE);
@@ -39,7 +34,7 @@ $db = null;
 try {
 	$db = new Database(array('db' => DB_NAME, 'host' => DB_HOST, 'user' => DB_USER, 'password' => DB_PASS));
 } catch (Exception $e) {
-	error_log($e); throw new Exception($e);
+	throw new Exception($e);
 }
 
 // Allow to run scripts in cli environment, or as cron job.
@@ -71,14 +66,12 @@ Util::detectMobile(USER_AGENT);
 
 //Util::disableCache();
 Util::force_www(false);
-//Util::force_ssl();
+Util::force_ssl();
 
 // Load framework's environment.
 include CORE_PATH . 'controller.php';
 include CORE_PATH . 'bootstrap.php';
 include CORE_PATH .'model.php';
-
-$boot = null;
 
 if (empty(USER_AGENT)) {
 	header('HTTP/1.0 403 Forbidden');
@@ -94,12 +87,12 @@ if (empty(USER_AGENT)) {
 
 		// Filter input from user.
 		foreach ($_POST as $var => $val) {
-			htmlspecialchars(rtrim($val), ENT_QUOTES);
+			$val = htmlspecialchars(rtrim($val), ENT_QUOTES);
 			$_POST[$var] = $val;
 		}
 
 		foreach ($_GET as $var => $val) {
-			htmlspecialchars(rtrim($val), ENT_QUOTES);
+			$val = htmlspecialchars(rtrim($val), ENT_QUOTES);
 			$_GET[$var] = $val;
 		}
 
