@@ -101,6 +101,8 @@ class Bootstrap {
 
 
 	function init() {
+		// TODO: Finish this function, copy some code from init() ini annotation.
+		
 		$boot = $this->route($this->controller);
 
 		// Just load the controller, for now.
