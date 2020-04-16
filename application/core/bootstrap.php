@@ -104,10 +104,35 @@ class Bootstrap {
 		$boot = $this->route($this->controller);
 
 		// Just load the controller, for now.
-		$class = 'Framework\\Controllers\\'.$boot[1][0];
-		$page = new $class;
-		$page->init();
+		$this->$boot[0]($boot[1]);
 
+	}
+
+	private function load_controller($params = array()) {
+		$class = 'Framework\\Controllers\\'.$params[1][0];
+		$inc_file = CONTROLLER_PATH . strtolower($params[1][0]) . '.php';
+
+		// Deletes the first item - controller's name.
+		array_splice($params[1], 0, 1);
+
+		if (!file_exists($inc_file))
+			return false;
+
+		require_once $inc_file;
+
+		if (!class_exists($class))
+			return false;
+
+		$object = new $class;
+		$object->init();
+
+		if (count($params) > 0) {
+			foreach ($params as $param) {
+				if (method_exists($object, $param))
+					$object->$param;
+			}
+		}
+		return true;
 	}
 
 
@@ -116,7 +141,7 @@ class Bootstrap {
 
 	  $entrypoints['/%c/'] = 'load_controller';
 	  $entrypoints['/%c/%m'] = 'load_controller';
-	  $entrypoints['/%c/%m/%p'] = 'load_controller';
+	  $entrypoints['/%c/%m/%p'] = '';
 
 	  $reached = false;
 
