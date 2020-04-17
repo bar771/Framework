@@ -50,8 +50,8 @@ class Index extends BaseObject {
 
 		$errors = '';
 		if (empty($errors)) {
-			$this->database->prepare('INSERT INTO `users` (username,password,email,time,lastlogin) VALUES ()',
-				array());
+			$this->database->prepare('INSERT INTO `users` (username,password,email,time,lastlogin) VALUES (?, ?, ?, ?, ?)',
+				array($uname, $pword, $mail, time(), ''));
 				header('location: /'); die;
 		}
 		header('location: '.HTTP_REFERER); die;

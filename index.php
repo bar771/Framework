@@ -14,6 +14,7 @@ define('MEDIA_PATH', ABSPATH . 'application/uploads/media/');
 define('DEVELOPMENT_MODE', 1);
 define('PARAM_CLI', $_SERVER['argv']); // $argv
 define('RAW_DATA', file_get_contents("php://input"));
+define('SERVER', $_SERVER);
 
 ob_start();
 include CORE_PATH . 'config.php';
@@ -78,10 +79,9 @@ if (empty(USER_AGENT)) {
 	die;
 } else {
 	try {
-		$server = $_SERVER;
 
-		$host = $server['HOST_NAME'];
-		$path = $server['REQUEST_URI']; // QUERY_STRING
+		$host = SERVER['HOST_NAME'];
+		$path = SERVER['REQUEST_URI']; // QUERY_STRING
 
 		//$controller = (isset($_GET['c']) ? $_GET['c'] : '');
 
@@ -99,7 +99,7 @@ if (empty(USER_AGENT)) {
 		$boot = new Bootstrap($path, $db);
 		$boot->init();
 	} catch (Exception $e) {
-		error_log($e); throw new Exception($e);
+		error_log($e);
 	}
 }
 $db->close();
