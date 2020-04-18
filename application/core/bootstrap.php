@@ -111,11 +111,11 @@ class Bootstrap {
 	}
 
 	private function load_controller($params = array()) {
-		$class = 'Framework\\Controllers\\'.$params[1][0];
-		$inc_file = CONTROLLER_PATH . strtolower($params[1][0]) . '.php';
+		$class = 'Framework\\Controllers\\'.$params[0];
+		$inc_file = CONTROLLER_PATH . strtolower($params[0]) . '.php';
 
 		// Deletes the first item - controller's name.
-		array_splice($params[1], 0, 1);
+		array_splice($params, 0, 1);
 
 		if (!file_exists($inc_file))
 			return false;
