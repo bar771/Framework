@@ -26,12 +26,25 @@ class Chat extends BaseObject {
 		$this->renderView('chat');
 	}
 
-	function load_xhr() {
+	function load_xhr($url, $method = 'GET', $params = array()) {
+		if (!isset($url)) 
+			return NULL;
+		
+		switch ($method){
+			case 'GET':
+			case 'POST':
+				break;
+			default:
+				return NULL;
+		}
+		
+		$params = (count($params) > 0 ? http_build_query($params) : 'undefined');
+		
 		return '
 			<script type="text/javascript">
-			function post_xhr(url, param, receive, form){
+			function post_xhr(receive, form){
 				var xhr = new XMLHttpRequest();
-				xhr.open("POST", url, true);
+				xhr.open("'.$method.'", "'.$url.'", true);
 				if (form)
 					xhr.setRequestHeader("Content-type", "x-www-form-urlencoded");
 				else
@@ -41,9 +54,9 @@ class Chat extends BaseObject {
 						receive(xhr.responseText);
 				};
 				if (form)
-					xhr.send(param);
+					xhr.send('.$params.');
 				else
-					xhr.send(JSON.stringify(param));
+					xhr.send(JSON.stringify('.$params.'));
 			}
 			</script>
 		';
