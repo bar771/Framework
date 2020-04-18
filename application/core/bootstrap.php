@@ -106,8 +106,22 @@ class Bootstrap {
 		$boot = $this->route($this->controller);
 
 		// Just load the controller, for now.
-		$this->$boot[0]($boot[1]);
-
+		$func = $this->$boot[0]($boot[1]);
+		
+		if (!$func || !isset($func)) 
+		{
+			$path = implode('/', $boot[1]);
+			$path = Util::getFile('uploads/'.$path);
+			
+			if (!empty($path)) {
+				$this->getResources($path);
+			}else {
+				echo '<!DOCTYPE html><html dir="rtl"><head><title>Not found !</title><style type="text/css">.text-center{text-align:center;}.text{font-size:35px;font-weight:bold;}a{color:#000;text-decoration:none;border-bottom:1px dotted #000;}</style></head><body><div class="text text-center">Page not found !</div><div class="text-center"><a href="javascript:void(0);" onclick="javascript:window.location.href = \'/\';">Go back. !</a></div></body></html>';
+				header('Content-Type: text/html');
+				header("HTTP/1.0 404 Not Found");
+				return;
+			}
+		}
 	}
 
 	private function load_controller($params = array()) {
